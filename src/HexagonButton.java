@@ -1,35 +1,30 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class HexagonButton extends JButton {
     private static final long serialVersionUID = 1L;
-    private static final int SIDES = 6;
-    private static final int SIDE_LENGTH = 50;
-    public static final int LENGTH = 95;
-    public static final int WIDTH = 105;
+    ImageIcon yourImage = new ImageIcon("C:\\Users\\Hanga\\ProgHF\\alap.png");
     private int row = 0;
     private int col = 0;
-    public Color color=Color.BLACK;
+    private boolean used=false;
+
 
     public HexagonButton(int r, int c) throws IOException {
-        super(String.valueOf(r +":" + c));
+        //super(String.valueOf(r +":" + c));
         setContentAreaFilled(false);
         setBorderPainted(false);
-        setFocusPainted(true);
-        setPreferredSize(new Dimension(WIDTH, LENGTH));
-        //setBackground(Color.GRAY);
+        setFocusPainted(false);
+        setIcon(yourImage);
+
         row=r;
         col=c;
     }
 
-    @Override
+  /*@Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        //g.setColor(color);
+        g.setColor(Color.red);
+
         Polygon hex=new Polygon();
         for(int i=0; i<SIDES; i++){
             hex.addPoint((int) (50+SIDE_LENGTH * Math.cos((i * 2 * Math.PI / SIDES)-33)),
@@ -38,9 +33,6 @@ public class HexagonButton extends JButton {
 
         g.drawPolygon(hex);
     }
-
-
-
     public int getRow(){
         return row;
     }
@@ -49,4 +41,15 @@ public class HexagonButton extends JButton {
         return col;
     }
 
+    public ImageIcon getImage(){
+        return yourImage;
+    }*/
+
+    public boolean isUsed(){
+        return used;
+    }
+
+    public void setUsed(boolean b){
+        used=b;
+    }
 }

@@ -6,11 +6,16 @@ import java.io.IOException;
 
 public class MyFrame extends JFrame {
 
-    HexagonFrame game=new HexagonFrame();
+    Game game=new Game();
+    Demo demo=new Demo();
+
+    Single single=new Single();
     private final JButton bemutato=new JButton("Demo");
     private final JButton gep_ellen=new JButton("1 Player");
     private final JButton jatek=new JButton("2 Players");
     private final JButton betolt=new JButton("Load game");
+
+
 
 
     MyFrame() throws IOException {
@@ -30,11 +35,11 @@ public class MyFrame extends JFrame {
         betolt.setPreferredSize(new Dimension(100,50));
 
         panel.add(bemutato);
-        bemutato.addActionListener(new MyButtonListener(bemutato));
+        bemutato.addActionListener(new DemoListener(bemutato));
         panel.add(gep_ellen);
-        gep_ellen.addActionListener(new MyButtonListener(gep_ellen));
+        gep_ellen.addActionListener(new SingleListener(gep_ellen));
         panel.add(jatek);
-        jatek.addActionListener(new MyButtonListener(jatek));
+        jatek.addActionListener(new GameListener(jatek));
         panel.add(betolt);
         add(panel, BorderLayout.CENTER);
 
@@ -49,8 +54,45 @@ public class MyFrame extends JFrame {
         public void actionPerformed(ActionEvent e) {
             game.setVisible(true);
             setVisible(false);
-            //button.setBackground(Color.GRAY);
+        }
+    }
 
+    public class DemoListener implements ActionListener {
+        JButton button;
+
+        DemoListener(JButton button){this.button=button; }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            demo.setVisible(true);
+            game.setVisible(false);
+            single.setVisible(false);
+        }
+    }
+
+    public class SingleListener implements ActionListener {
+        JButton button;
+
+        SingleListener(JButton button){this.button=button; }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            demo.setVisible(false);
+            game.setVisible(false);
+            single.setVisible(true);
+        }
+    }
+
+    public class GameListener implements ActionListener {
+        JButton button;
+
+        GameListener(JButton button){this.button=button; }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            demo.setVisible(false);
+            game.setVisible(true);
+            single.setVisible(false);
         }
     }
 }
