@@ -2,52 +2,55 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-
-import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
-public class Game extends JFrame {
-    private static final int ROWS = 9;
-    private static final int COLUMNS = 9;
-    private HexagonButton[][] button=new HexagonButton[ROWS][COLUMNS];
-    static int lepesszam=0;
 
+public class Game extends HexagonFrame {
+    private static JLabel field;
+    private JButton vege;
 
 
 
     Game() throws IOException {
-        super("HexagonFrame");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        super("Game");
+        //setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1500,1500);
-        // setLocation(new Point(500, 0));
+        setLepesszam(0);
+        indit();
 
-
-        int x = 439;
-        int offsetY = 0;
-
-        for(int i=0; i<ROWS; i++){
-            for(int j=0; j<COLUMNS; j++){
-                if(i+j<4 || i+j > 12) {
-                    button[i][j]=null;
-                } else {
-                    button[i][j] = new HexagonButton(i, j);
-                    add(button[i][j]);
-                    button[i][j].setBounds(x, offsetY, 95, 110);
-                    button[i][j].addActionListener(new PlayerListener(button[i][j]));
-                    x+=94;
-                }
-            }
-            offsetY+=81;
-            if(i<4) {
-                x=390-(i*47);
-            }else{
-                x=390+(i-6)*47;
-            }
-        }
+        /*JPanel panel=new JPanel();
+        JTextField nev1=new JTextField(20);
+        JTextField nev2=new JTextField(20);
+        String[] szinek={"piros", "zöld"};
+        JComboBox<String> colors=new JComboBox<>(szinek);
+        panel.setLayout(new GridLayout(2,1));
+        panel.add(nev1);
+        panel.add(nev2);
+        panel.add(colors);
+        add(panel, BorderLayout.NORTH);*/
     }
 
-    public static class PlayerListener implements ActionListener {
+    public void indit(){
+        for(int i=0; i<getRows(); i++){
+            for(int j=0; j<getColumns(); j++){
+                if(button[i][j]!=null){
+                    button[i][j].addActionListener(new PlayerListener(button[i][j]));
+                }
+            }
+        }
+        field=new JLabel();
+        add(field, BorderLayout.EAST);
+        field.setVisible(true);
+        field.setText("Első játékos lép");
+
+        vege=new JButton("Játék vége ... Kilépés");
+        vege.setPreferredSize(new Dimension(200, 50));
+        add(vege,BorderLayout.WEST);
+        vege.setVisible(false);
+        vege.addActionListener(new EndListener("Game"));
+    }
+
+    public class PlayerListener implements ActionListener {
             HexagonButton tile;
 
             PlayerListener(HexagonButton tile){this.tile=tile;}
@@ -55,14 +58,28 @@ public class Game extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(tile.isUsed()) return;
-            if(lepesszam%2==0){
+            if(getLepesszam()%2==0){
                 tile.setIcon(new ImageIcon("C:\\Users\\Hanga\\ProgHF\\piros.png"));
+                tile.setSzin(Field.RED);
+                field.setText("második játékos lép");
             }else{
                 tile.setIcon(new ImageIcon("C:\\Users\\Hanga\\ProgHF\\zöld.png"));
+                tile.setSzin(Field.GREEN);
+                field.setText("Első játékos lép");
             }
             tile.setUsed(true);
-            lepesszam++;
+            setLepesszam(getLepesszam()+1);
+            setLastidx(tile.getRow(), tile.getCol());
 
+            if(winner(tile, 3)) {
+                vege.setVisible(true);
+
+            } else{
+                if(winner(tile,2)) {
+                    vege.setVisible(true);
+
+                }
+            }
         }
     }
 }

@@ -6,8 +6,9 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        MyFrame frame=new MyFrame();
+        Menu frame=new Menu();
 
             frame.setVisible(true);
+        //JatekVege vege=new JatekVege("Bena");
     }
 }
